@@ -1,0 +1,18 @@
+# https://travis-ci.org/tornadoweb/tornado
+language: python
+python:
+    - 3.5
+    - 3.6
+
+install:
+    - pip install -r requirements/base.txt
+
+script:
+    - pylint HW_1_2
+    - pep8 HW_1_2
+    - flake8 HW_1_2
+
+sudo: false
+
+matrix:
+    fast_finish: true

@@ -1,0 +1,4 @@
+pylint==1.6.5
+flake8==3.3.0
+pep8==1.7.0
+pyyaml

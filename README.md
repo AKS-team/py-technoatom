@@ -1,1 +1,1 @@
-# py-technoatom
+# Python technoatom cource
