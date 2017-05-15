@@ -15,9 +15,8 @@ def tasks_gen(filename):
     :raises yaml.YAMLError: if has problem with format
     :raises ValueError: if has problem with content
     '''
-    for data in get_dataset(filename):
-        title, state, estimate = data
+    for (title, state, estimate) in get_dataset(filename):
         new_task = Task(title, estimate)
-        if state == 'ready':
+        if state == Task.READY:
             new_task.ready()
         yield new_task
