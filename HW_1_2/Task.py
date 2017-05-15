@@ -3,10 +3,12 @@ from datetime import date
 
 class Task:
 
+    IN_PROGRESS = 'in_progress'
+    READY = 'ready'
     def __init__(self, title, estimate):
         self.title = title
         self.estimate = estimate
-        self.state = 'in_progress'
+        self.state = self.IN_PROGRESS
 
     @property
     def remaining(self):
@@ -14,11 +16,10 @@ class Task:
 
     @property
     def is_failed(self):
-        return self.state == 'in_progress' and self.estimate < date.today()
+        return self.state == self.IN_PROGRESS and self.estimate < date.today()
 
     def ready(self):
-        if self.state == 'in_progress':
-            self.state = 'ready'
+        self.state = self.READY
 
     def __str__(self):
         return '{} - {} - {}'.format(self.title, self.estimate, self.state)
