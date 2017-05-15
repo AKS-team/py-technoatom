@@ -15,12 +15,11 @@ class WSGIApplication(object):
 
     def __iter__(self):
         self.start_response('200 OK', self.default_headers)
-        for crit_task in filter(lambda task: task.is_failed or
-                                (
-                                    task.state == 'in_progress' and
-                                    task.remaining.days < 3
-                                ),
-                                tasks_gen(self.data_file)):
+        crit_tasks = (
+            task for task in tasks_gen(self.data_file)
+            if task.is_critical
+        )
+        for crit_task in crit_tasks:
             yield str(crit_task).encode('utf8')
             yield '<br>'.encode('utf8')
 
