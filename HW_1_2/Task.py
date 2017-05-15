@@ -5,6 +5,7 @@ class Task:
 
     IN_PROGRESS = 'in_progress'
     READY = 'ready'
+    
     def __init__(self, title, estimate):
         self.title = title
         self.estimate = estimate
