@@ -14,4 +14,4 @@ class Roadmap:
         return [task for task in self.tasks if task.estimate == date.today()]
 
     def filter(self, state):
-        return filter(lambda task: task.state == state, self.tasks)
+        return [task for self.tasks if task.state == state]
