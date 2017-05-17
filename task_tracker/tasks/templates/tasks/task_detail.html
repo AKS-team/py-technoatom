@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/critical-tasks.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="col-md-4 col-md-offset-2">
+        <h3>Задание:</h3>
+        {% for name, verbose_name, value in object.get_fields %}
+
+            {% with "critical-" as crit_prefix %}
+            <p>
+                <strong id="{% if object.is_critical %}{{ crit_prefix }}{% endif %}{{ name }}">
+                    {{ verbose_name }}:
+                </strong>
+                <span id="{% if object.is_critical %}{{ crit_prefix }}{% endif %}{{ name }}-value">{{ value }}</span>
+            </p>
+            {% endwith %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

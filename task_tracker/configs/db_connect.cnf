@@ -1,0 +1,9 @@
+[client]
+database = task_tracker_db
+user = tracker_admin
+password = password
+default-character-set = utf8
+
+[mysqld]
+default-character-set=utf8
+collation_server=utf8_unicode_ci
