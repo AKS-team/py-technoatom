@@ -1,0 +1,17 @@
+{% extends "tasks/task_list.html" %}
+
+{% block nav_task %}
+""
+{% endblock %}
+
+{% block nav_roadmap %}
+"active"
+{% endblock %}
+
+{% block table_title %}
+Задачи дорожной карты:
+{% endblock %}
+
+{% block control_buttons %}
+<a href={% url 'roadmap-delete' pk=object.id %} role="button" class="btn btn-danger">Удалить карту</a>
+{% endblock control_buttons %}

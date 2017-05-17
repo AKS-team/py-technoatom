@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block nav_roadmap %}
+"active"
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>
+            Дорожная карта
+        </th>
+        <th>
+            Управление
+        </th>
+    </tr>
+    {% for roadmap in object_list %}
+    <tr>
+        <td>
+            {{ roadmap }}
+        </td>
+        <td>
+            <a href={% url 'roadmap-detail' pk=roadmap.id %} role="button" class="btn btn-info">Просмотреть</a>
+            <a href={% url 'roadmap-delete' pk=roadmap.id %} role="button" class="btn btn-danger">Удалить</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% block control_buttons %}
+<a href={% url 'roadmap-create' %} role="button" class="btn btn-success">Добавить дорожную карту</a>
+{% endblock control_buttons %}
+{% endblock %}

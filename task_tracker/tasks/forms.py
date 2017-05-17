@@ -1,7 +1,8 @@
 from datetime import date
 from django import forms
-from tasks.models import Task
+from tasks.models import Task, Roadmap
 from crispy_forms.helper import FormHelper
+from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Submit
 
 
@@ -48,3 +49,28 @@ class TaskUpdateForm(forms.ModelForm):
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
         self.helper.add_input(Submit('submit', 'Сохранить'))
+
+class RoadmapCreateForm(forms.ModelForm):
+    tasks = forms.ModelMultipleChoiceField(queryset=Task.objects.filter(roadmap__isnull=True),
+                                           widget=forms.CheckboxSelectMultiple(),
+                                           help_text='Задания, которые не входят в другие дорожные карты',
+                                           label="Задания:")
+    class Meta:
+        model = Roadmap
+        fields = []
+
+
+    def __init__(self, *args, **kwargs):
+        super(RoadmapCreateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.helper.add_input(Submit('submit', 'Сохранить'))
+
+    def save(self, *args, **kwargs):
+        instance = super(RoadmapCreateForm, self).save(*args, **kwargs)
+        for task in self.cleaned_data['tasks']:
+            task.roadmap = instance
+            task.save()
+        return instance

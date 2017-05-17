@@ -18,7 +18,15 @@ class Task(models.Model):
         default=IN_PROGRESS,
         verbose_name="Статус выполнения",
     )
+    roadmap = models.ForeignKey('Roadmap',
+                                blank=True,
+                                null=True,
+                                verbose_name="Дорожная карта",
+                                on_delete=models.CASCADE)
 
+
+    def __str__(self):
+        return self.title
 
     @property
     def remaining(self):
@@ -39,8 +47,28 @@ class Task(models.Model):
         return reverse('task-detail', kwargs={'pk': self.pk})
 
     def get_fields(self):
+        exclude = ('id',)
         return [
             (field.name, field.verbose_name, self._get_FIELD_display(field))
             for field in self.__class__._meta.fields
-            if field.name != 'id'
+            if field.name not in exclude
         ]
+
+class Roadmap(models.Model):
+
+
+    def __str__(self):
+        return f'Дорожная карта №{self.pk}'
+
+    def get_absolute_url(self):
+        return reverse('roadmap-detail', kwargs={'pk': self.pk})
+
+    def get_tasks(self):
+        return Task.objects.filter(roadmap__id=self.id)
+
+    @property
+    def today(self):
+        return [task for task in self.get_tasks().filter(estimate=date.today())]
+
+    def filter(self, state):
+        return self.get_tasks().filter(state=state)

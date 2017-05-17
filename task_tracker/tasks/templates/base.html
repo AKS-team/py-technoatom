@@ -15,8 +15,15 @@
 </head>
 
 <body>
-    {% block content %}{% endblock %}
-
+    <ul class="nav nav-pills">
+      <li class={% block nav_task %}""{% endblock %}><a href={% url 'tasks-list' %}>Задачи</a></li>
+      <li class={% block nav_roadmap %}""{% endblock %}><a href={% url 'roadmap-list' %}>Дорожные карты</a></li>
+    </ul>
+    <div class="container-fluid">
+        <div class="col-md-9 col-md-offset-2">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     {% block scripts %}{% endblock %}
 </body>

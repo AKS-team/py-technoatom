@@ -15,10 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from tasks.views import TaskCreate, TaskDetailed, TaskUpdate
+from tasks.views import TaskCreate, TaskDetailed, TaskUpdate, TasksList, TaskDelete, RoadmapView
+from tasks.views import  RoadmapCreate, RoadmapList, RoadmapDelete
 
 urlpatterns = [
+    url(r'^task/all/$', TasksList.as_view(), name='tasks-list'),
     url(r'^task/(?P<pk>[0-9]+)/$', TaskDetailed.as_view(), name='task-detail'),
-    url(r'^update/(?P<pk>[0-9]+)/$', TaskUpdate.as_view(), name='task-update'),
-    url(r'^create/', TaskCreate.as_view(), name='task-create'),
+    url(r'^task/update/(?P<pk>[0-9]+)/$', TaskUpdate.as_view(), name='task-update'),
+    url(r'^task/create/', TaskCreate.as_view(), name='task-create'),
+    url(r'^task/delete/(?P<pk>[0-9]+)/$', TaskDelete.as_view(), name='task-delete'),
+
+    url(r'^roadmap/create/', RoadmapCreate.as_view(), name='roadmap-create'),
+    url(r'^roadmap/(?P<pk>[0-9]+)/$', RoadmapView.as_view(), name='roadmap-detail'),
+    url(r'^roadmap/all/$', RoadmapList.as_view(), name='roadmap-list'),
+    url(r'^roadmap/delete/(?P<pk>[0-9]+)$', RoadmapDelete.as_view(), name='roadmap-delete'),
 ]

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block nav_task %}
+"active"
+{% endblock %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/task-list.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>{% block table_title %}Задачи{% endblock %}</h1>
+    <table class="table table-striped table-bordered">
+        {% for task in object_list %}
+        {% if forloop.first %}
+        <tr>
+            {% for _, verbose_name, _ in task.get_fields  %}
+            <th>
+                {{ verbose_name }}
+            </th>
+            {% endfor %}
+            <th>
+                Управление
+            </th>
+        </tr>
+        {%endif%}
+        <tr>
+            <td> {{ task.title }} </td>
+            <td> {{ task.get_state_display }} </td>
+            <td> {{ task.estimate }} </td>
+            <td>
+                {% if task.roadmap %}
+                <a href={% url 'roadmap-detail' pk=task.roadmap.id %}>
+                    {{ task.roadmap }}
+                </a>
+                {% else %}
+                -
+                {%endif%}
+            </td>
+            <td>
+                <a href={% url 'task-update' pk=task.id %} role="button" class="btn btn-default">Изменить</button>
+                <a href={% url 'task-delete' pk=task.id %} role="button" class="btn btn-danger">Удалить</button>
+            </td>
+            {% empty %}
+            <td>Задач ещё нет.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% block control_buttons %}
+    <a href={% url 'task-create' %} role="button" class="btn btn-success">Добавить задачу</a>
+    {% endblock control_buttons %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "tasks/task_confirm_delete.html" %}
+
+{% block nav_task %}
+""
+{% endblock %}
+
+{% block nav_roadmap %}
+"active"
+{% endblock %}
+
+{% block subject %}
+дорожную карту и все связанные задачи у
+{% endblock %}
+
+{% block base_url %}
+{% url 'roadmap-list' %}
+{% endblock %}

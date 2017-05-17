@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block nav_task %}
+"active"
+{% endblock %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-2">
+    <form action="" method="post">{% csrf_token %}
+        <p>Вы уверены, что хотите удалить {% block subject %}задачу{% endblock %}: <strong>"{{ object }}"</strong>?</p>
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href={% block base_url %}{% url 'tasks-list' %}{% endblock %} role="button" class="btn btn-default">Отмена</a>
+    </form>
+</div>
+{% endblock %}
