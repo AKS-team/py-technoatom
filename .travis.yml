@@ -5,6 +5,7 @@ python:
 
 install:
     - pip install -r requirements/lint.txt
+    - pip install -r requirements/base.txt
 
 script:
     - pylint task_tracker
