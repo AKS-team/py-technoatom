@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from tasks.views import TaskCreate, TaskDetailed, TaskUpdate, TasksList, TaskDelete, RoadmapView
-from tasks.views import  RoadmapCreate, RoadmapList, RoadmapDelete
+from tasks.views import TaskCreate, TaskDetailed, TaskUpdate, TasksList,\
+TaskDelete, RoadmapView, RoadmapCreate, RoadmapList, RoadmapDelete
 
 urlpatterns = [
     url(r'^task/all/$', TasksList.as_view(), name='tasks-list'),
