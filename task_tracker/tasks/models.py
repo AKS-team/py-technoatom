@@ -1,6 +1,7 @@
 from datetime import date
 from django.urls import reverse
 from django.db import models
+from django.db.models import F, Max, ExpressionWrapper
 
 # Create your models here.
 class Task(models.Model):
@@ -11,6 +12,7 @@ class Task(models.Model):
         (READY, 'ready'),
     )
     title = models.CharField(max_length=50, verbose_name="Заголовок")
+    creation_date = models.DateField(auto_now=True)
     estimate = models.DateField(verbose_name="Срок выполнения")
     state = models.CharField(
         max_length=3,
@@ -72,3 +74,25 @@ class Roadmap(models.Model):
 
     def filter(self, state):
         return self.get_tasks().filter(state=state)
+
+class Scores(models.Model):
+    task = models.OneToOneField(
+        Task,
+        on_delete=models.CASCADE,
+        verbose_name="Задача"
+    )
+    date = models.DateField(verbose_name="Дата зачисления")
+    points = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="Количество зачистенных очков")
+
+    def __init__(self, *args, **kwargs):
+        task = kwargs.pop('task', None)
+        super(Scores, self).__init__(*args, **kwargs)
+        if task is not None:
+            self.task = task
+            self.date = date.today()
+            diff_dict = Task.objects.annotate(diff=ExpressionWrapper(F('estimate') - F('creation_date'),
+                                                                     output_field=models.DurationField()
+                                                                    )
+                                             ).aggregate(Max('diff'))
+            self.points = ((self.date - self.task.creation_date).days / (task.estimate - task.creation_date).days) \
+                           + ((task.estimate - task.creation_date).days / diff_dict['diff__max'].days)

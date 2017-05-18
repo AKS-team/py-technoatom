@@ -1,6 +1,6 @@
 from datetime import date
 from django import forms
-from tasks.models import Task, Roadmap
+from tasks.models import Task, Roadmap, Scores
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Submit
