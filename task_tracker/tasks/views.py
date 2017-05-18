@@ -5,7 +5,6 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from tasks.models import Task, Roadmap
 from tasks.forms import TaskCreateForm, TaskUpdateForm, RoadmapCreateForm
-from django.http import HttpResponseRedirect
 
 # Create your views here.
 class TaskDetailed(DetailView):
