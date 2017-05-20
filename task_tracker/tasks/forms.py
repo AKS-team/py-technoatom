@@ -72,7 +72,6 @@ class RoadmapCreateForm(forms.ModelForm):
     @transaction.atomic
     def save(self, *args, **kwargs):
         instance = super(RoadmapCreateForm, self).save(*args, **kwargs)
-        raise Exception()
         for task in self.cleaned_data['tasks']:
             task.roadmap = instance
             task.save()
