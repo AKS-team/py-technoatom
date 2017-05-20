@@ -1,5 +1,6 @@
 from datetime import date
 from django import forms
+from django.db import transaction
 from tasks.models import Task, Roadmap
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
@@ -68,8 +69,10 @@ class RoadmapCreateForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.add_input(Submit('submit', 'Сохранить'))
 
+    @transaction.atomic
     def save(self, *args, **kwargs):
         instance = super(RoadmapCreateForm, self).save(*args, **kwargs)
+        raise Exception()
         for task in self.cleaned_data['tasks']:
             task.roadmap = instance
             task.save()
