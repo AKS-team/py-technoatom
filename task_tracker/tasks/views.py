@@ -7,6 +7,9 @@ from tasks.models import Task, Roadmap
 from tasks.forms import TaskCreateForm, TaskUpdateForm, RoadmapCreateForm
 
 # Create your views here.
+def order(queryset, ordering=('state', 'estimate')):
+    return queryset.order_by(*ordering)
+
 class TaskDetailed(DetailView):
     model = Task
 
@@ -16,7 +19,7 @@ class TasksList(ListView):
 
 
     def get_queryset(self):
-        new_context = Task.objects.order_by(*self.ordering)
+        new_context = order(Task.objects)
         return new_context
 
 class TaskCreate(CreateView):
@@ -40,7 +43,7 @@ class RoadmapView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(RoadmapView, self).get_context_data(**kwargs)
-        context['object_list'] = Task.objects.filter(roadmap__id=self.kwargs['pk'])
+        context['object_list'] = order(Task.objects.filter(roadmap__id=self.kwargs['pk']))
         return context
 
 class RoadmapList(ListView):

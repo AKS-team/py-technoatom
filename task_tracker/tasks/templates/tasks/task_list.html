@@ -26,10 +26,11 @@
             </th>
         </tr>
         {%endif%}
-        <tr>
+        <tr class={% if task.is_critical %}"warning"{% elif task.is_failed  %}"danger"{% elif task.is_ready  %}"success"{% endif %}>
             <td> {{ task.title }} </td>
-            <td> {{ task.get_state_display }} </td>
+            <td> {{ task.creation_date }} </td>
             <td> {{ task.estimate }} </td>
+            <td> {{ task.get_state_display }} </td>
             <td>
                 {% if task.roadmap %}
                 <a href={% url 'roadmap-detail' pk=task.roadmap.id %}>

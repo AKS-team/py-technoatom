@@ -14,6 +14,7 @@
 <div class="col-md-4 col-md-offset-2">
     <h3>Задание:</h3>
     {% for name, verbose_name, value in object.get_fields %}
+        {% if name not in "creation_date" %}
         {% with "critical-" as crit_prefix %}
         <p>
             <strong id="{% if object.is_critical %}{{ crit_prefix }}{% endif %}{{ name }}">
@@ -22,6 +23,7 @@
             <span id="{% if object.is_critical %}{{ crit_prefix }}{% endif %}{{ name }}-value">{{ value }}</span>
         </p>
         {% endwith %}
+        {% endif %}
     {% endfor %}
     <a href={% url 'tasks-list' %} role="button" class="btn btn-primary">К списку задач</a>
 </div>

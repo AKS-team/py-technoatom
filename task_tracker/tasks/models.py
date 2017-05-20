@@ -12,7 +12,7 @@ class Task(models.Model):
         (READY, 'ready'),
     )
     title = models.CharField(max_length=50, verbose_name="Заголовок")
-    creation_date = models.DateField(auto_now=True)
+    creation_date = models.DateField(auto_now=True, verbose_name="Дата создания")
     estimate = models.DateField(verbose_name="Срок выполнения")
     state = models.CharField(
         max_length=3,
@@ -41,6 +41,10 @@ class Task(models.Model):
     @property
     def is_critical(self):
         return self.is_failed or (self.state == self.IN_PROGRESS and self.remaining.days < 3)
+
+    @property
+    def is_ready(self):
+        return self.state == self.READY
 
     def ready(self):
         self.state = self.READY
@@ -84,8 +88,7 @@ class Scores(models.Model):
     date = models.DateField(verbose_name="Дата зачисления")
     points = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="Количество зачистенных очков")
 
-    def __init__(self, *args, **kwargs):
-        task = kwargs.pop('task', None)
+    def __init__(self, task, *args, **kwargs):
         super(Scores, self).__init__(*args, **kwargs)
         if task is not None:
             self.task = task
