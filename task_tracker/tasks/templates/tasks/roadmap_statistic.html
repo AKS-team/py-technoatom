@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block nav_roadmap %}
+"active"
+{% endblock %}
+
+{% block content %}
+  <svg width="960" height="500"></svg>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var url_json_data = "{% url 'roadmap-statistic-json' pk=pk year=year %}"
+</script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="{% static 'js/roadmap_statistic_chart.js' %}"></script>
+{% endblock %}

@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from tasks.views import TaskCreate, TaskDetailed, TaskUpdate, TasksList,\
-TaskDelete, RoadmapView, RoadmapCreate, RoadmapList, RoadmapDelete
+TaskDelete, RoadmapView, RoadmapCreate, RoadmapList, RoadmapDelete, \
+RoadmapStatisticJson, RoadmapStatistic
 
 urlpatterns = [
     url(r'^task/all/$', TasksList.as_view(), name='tasks-list'),
@@ -29,4 +30,8 @@ urlpatterns = [
     url(r'^roadmap/(?P<pk>[0-9]+)/$', RoadmapView.as_view(), name='roadmap-detail'),
     url(r'^roadmap/all/$', RoadmapList.as_view(), name='roadmap-list'),
     url(r'^roadmap/delete/(?P<pk>[0-9]+)$', RoadmapDelete.as_view(), name='roadmap-delete'),
+    url(r'^roadmap/statistic(?:\/(?P<year>[0-9]{4}))?/(?P<pk>[0-9]+)\.json/$',
+        RoadmapStatisticJson.as_view(), name='roadmap-statistic-json'),
+    url(r'^roadmap/statistic(?:\/(?P<year>[0-9]{4}))?/(?P<pk>[0-9]+)/$',
+        RoadmapStatistic.as_view(), name='roadmap-statistic'),
 ]

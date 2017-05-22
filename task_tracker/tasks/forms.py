@@ -1,6 +1,8 @@
 from datetime import date
 from django import forms
-from tasks.models import Task, Roadmap, Scores
+from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
+from tasks.models import Task, Roadmap, Score
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Submit
@@ -50,6 +52,19 @@ class TaskUpdateForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.add_input(Submit('submit', 'Сохранить'))
 
+    @transaction.atomic
+    def save(self, *args, **kwargs):
+        new_task = self.instance
+        if new_task.state == new_task.READY:
+            try:
+                score = new_task.score
+                score.set_score(new_task)
+            except Score.DoesNotExist:
+                score = Score().set_score(new_task)
+            score.save()
+        instance = super(TaskUpdateForm, self).save(*args, **kwargs)
+        return instance
+
 class RoadmapCreateForm(forms.ModelForm):
     tasks = forms.ModelMultipleChoiceField(queryset=Task.objects.filter(roadmap__isnull=True),
                                            widget=forms.CheckboxSelectMultiple(),
@@ -68,6 +83,7 @@ class RoadmapCreateForm(forms.ModelForm):
         self.helper.field_class = 'col-lg-8'
         self.helper.add_input(Submit('submit', 'Сохранить'))
 
+    @transaction.atomic
     def save(self, *args, **kwargs):
         instance = super(RoadmapCreateForm, self).save(*args, **kwargs)
         for task in self.cleaned_data['tasks']:

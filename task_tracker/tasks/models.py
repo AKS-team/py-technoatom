@@ -12,7 +12,7 @@ class Task(models.Model):
         (READY, 'ready'),
     )
     title = models.CharField(max_length=50, verbose_name="Заголовок")
-    creation_date = models.DateField(auto_now=True, verbose_name="Дата создания")
+    creation_date = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     estimate = models.DateField(verbose_name="Срок выполнения")
     state = models.CharField(
         max_length=3,
@@ -79,7 +79,7 @@ class Roadmap(models.Model):
     def filter(self, state):
         return self.get_tasks().filter(state=state)
 
-class Scores(models.Model):
+class Score(models.Model):
     task = models.OneToOneField(
         Task,
         on_delete=models.CASCADE,
@@ -88,14 +88,13 @@ class Scores(models.Model):
     date = models.DateField(verbose_name="Дата зачисления")
     points = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="Количество зачистенных очков")
 
-    def __init__(self, task, *args, **kwargs):
-        super(Scores, self).__init__(*args, **kwargs)
-        if task is not None:
-            self.task = task
-            self.date = date.today()
-            diff_dict = Task.objects.annotate(diff=ExpressionWrapper(F('estimate') - F('creation_date'),
-                                                                     output_field=models.DurationField()
-                                                                    )
-                                             ).aggregate(Max('diff'))
-            self.points = ((self.date - self.task.creation_date).days / (task.estimate - task.creation_date).days) \
-                           + ((task.estimate - task.creation_date).days / diff_dict['diff__max'].days)
+    def set_score(self, task):
+        self.task = task
+        self.date = date.today()
+        diff_dict = Task.objects.annotate(diff=ExpressionWrapper(F('estimate') - F('creation_date'),
+                                                                 output_field=models.DurationField()
+                                                                )
+                                         ).aggregate(Max('diff'))
+        self.points = ((self.date - self.task.creation_date).days / (self.task.estimate - self.task.creation_date).days) \
+                        + ((self.task.estimate - self.task.creation_date).days / diff_dict['diff__max'].days)
+        return self

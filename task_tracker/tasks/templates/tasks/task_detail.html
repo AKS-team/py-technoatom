@@ -20,7 +20,13 @@
             <strong id="{% if object.is_critical %}{{ crit_prefix }}{% endif %}{{ name }}">
                 {{ verbose_name }}:
             </strong>
-            <span id="{% if object.is_critical %}{{ crit_prefix }}{% endif %}{{ name }}-value">{{ value }}</span>
+            <span id="{% if object.is_critical %}{{ crit_prefix }}{% endif %}{{ name }}-value">
+              {% if value %}
+                {{ value }}
+              {% else %}
+                -
+              {% endif %}
+            </span>
         </p>
         {% endwith %}
         {% endif %}
