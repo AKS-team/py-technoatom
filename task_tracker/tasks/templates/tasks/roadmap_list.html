@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block content %}
-
+{% block control_buttons %}
+<a href={% url 'roadmap-create' %} role="button" class="btn btn-success control-btn">Добавить дорожную карту</a>
+{% endblock control_buttons %}
 <table class="table table-striped table-bordered">
     <tr>
         <th>
@@ -28,7 +30,5 @@
     </tr>
     {% endfor %}
 </table>
-{% block control_buttons %}
-<a href={% url 'roadmap-create' %} role="button" class="btn btn-success">Добавить дорожную карту</a>
-{% endblock control_buttons %}
+
 {% endblock %}

@@ -12,6 +12,11 @@
 
 {% block content %}
     <h1>{% block table_title %}Задачи{% endblock %}</h1>
+
+    {% block control_buttons %}
+        <a href={% url 'task-create' %} role="button" class="btn btn-success control-btn">Добавить задачу</a>
+    {% endblock control_buttons %}
+
     <table class="table table-striped table-bordered">
         {% for task in object_list %}
         {% if forloop.first %}
@@ -49,7 +54,4 @@
         </tr>
         {% endfor %}
     </table>
-    {% block control_buttons %}
-    <a href={% url 'task-create' %} role="button" class="btn btn-success">Добавить задачу</a>
-    {% endblock control_buttons %}
 {% endblock %}

@@ -13,6 +13,6 @@
 {% endblock %}
 
 {% block control_buttons %}
-<a href={% url 'roadmap-delete' pk=object.id %} role="button" class="btn btn-danger">Удалить карту</a>
-<a href={% url 'roadmap-statistic' pk=object.id %} role="button" class="btn btn-info">Статистика за год</a>
+<a href={% url 'roadmap-delete' pk=object.id %} role="button" class="btn btn-danger control-btn">Удалить карту</a>
+<a href={% url 'roadmap-statistic' pk=object.id %} role="button" class="btn btn-info control-btn">Статистика за год</a>
 {% endblock control_buttons %}
