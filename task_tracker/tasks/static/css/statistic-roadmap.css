@@ -1,0 +1,29 @@
+:root {
+  --created-color: cornflowerblue;
+  --finished-color: limegreen;
+  --points-color: gold;
+}
+
+path.created {
+    stroke: var(--created-color);
+}
+
+span.created {
+    color: var(--created-color);
+}
+
+path.finished {
+    stroke: var(--finished-color);
+}
+
+span.finished {
+    color: var(--finished-color);
+}
+
+path.points {
+    stroke: var(--points-color);
+}
+
+span.points {
+    color: var(--points-color);
+}

@@ -95,6 +95,7 @@ class Score(models.Model):
                                                                  output_field=models.DurationField()
                                                                 )
                                          ).aggregate(Max('diff'))
-        self.points = ((self.date - self.task.creation_date).days / (self.task.estimate - self.task.creation_date).days) \
+        self.points = ((self.date - self.task.creation_date).days /
+                       (self.task.estimate - self.task.creation_date).days) \
                         + ((self.task.estimate - self.task.creation_date).days / diff_dict['diff__max'].days)
         return self

@@ -2,17 +2,31 @@
 
 {% load static %}
 
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/statistic-roadmap.css' %}">
+{% endblock %}
+
 {% block nav_roadmap %}
 "active"
 {% endblock %}
 
 {% block content %}
-  <svg width="960" height="500"></svg>
+    <div>
+        <h3>Статистика <a href="{% url 'roadmap-detail' pk=pk %}">дорожной карты №{{ pk }}</a></h3>
+        <h4>Количества: <span class='created'>созданных</span> и  <span class='finished'>решенных</span> задач по неделям<h4>
+    </div>
+    <svg class="created-finished" width="960" height="500"></svg>
+    <hr>
+    <div>
+        <h4>Количества: <span class='points'>зачисленных очков</span> по месяцам<h4>
+    </div>
+    <svg class="sum-score" width="960" height="500"></svg>
 {% endblock %}
 
 {% block scripts %}
 <script>
-  var url_json_data = "{% url 'roadmap-statistic-json' pk=pk year=year %}"
+  var url_json_data = "{% url 'roadmap-statistic-json' pk=pk year=year %}",
+      url_json_data2 = "{% url 'roadmap-statistic-score-json' pk=pk year=year %}"
 </script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="{% static 'js/roadmap_statistic_chart.js' %}"></script>

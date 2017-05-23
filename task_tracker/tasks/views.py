@@ -7,11 +7,13 @@ from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.urls import reverse_lazy, reverse
 from django.db import connection
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
+from django.core.serializers import serialize
 
-from tasks.models import Task, Roadmap
+from tasks.models import Task, Roadmap, Score
 from tasks.forms import TaskCreateForm, TaskUpdateForm, RoadmapCreateForm
-from tasks.utils import namedtuplefetchall
 
 # Create your views here.
 def order(queryset, ordering=('state', 'estimate')):
@@ -86,7 +88,7 @@ class RoadmapStatisticJson(View):
             year = date.today().year
         else: year = int(year)
         pk = int(pk)
-        context={}
+        context = {}
         context['year'] = year
         context['object_list'] = self.get_statistic_query(pk, year)
         return JsonResponse(context)
@@ -94,8 +96,27 @@ class RoadmapStatisticJson(View):
     def get_statistic_query(self, pk, year):
         with connection.cursor() as cursor:
             cursor.execute(self.sql_query, [pk, Task.READY, year, pk, year])
-            rows = namedtuplefetchall(cursor)
+            rows = cursor.fetchall()
         return rows
+
+class ScoreStatisticJson(View):
+    model = Score
+
+
+    def get(self, request, pk, year):
+        if year is None:
+            year = date.today().year
+        else: year = int(year)
+        pk = int(pk)
+        context = {}
+        context['year'] = year
+        queryset = self.model.objects \
+                        .filter(date__year=year, task__roadmap=pk) \
+                        .annotate(month_first_day=TruncMonth('date'))\
+                        .values_list('month_first_day') \
+                        .annotate(sum_points=Sum('points'))
+        context['object_list'] = list(queryset)
+        return JsonResponse(context)
 
 class RoadmapStatistic(View):
     template_name = 'tasks/roadmap_statistic.html'
