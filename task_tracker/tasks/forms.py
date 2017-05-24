@@ -56,12 +56,7 @@ class TaskUpdateForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         new_task = self.instance
         if new_task.state == new_task.READY:
-            try:
-                score = new_task.score
-                score.set_score(new_task)
-            except Score.DoesNotExist:
-                score = Score().set_score(new_task)
-            score.save()
+            new_task.set_score()
         instance = super(TaskUpdateForm, self).save(*args, **kwargs)
         return instance
 

@@ -60,6 +60,23 @@ class Task(models.Model):
             if field.name not in exclude
         ]
 
+    def set_score(self):
+        try:
+            score = self.score
+        except Score.DoesNotExist:
+            score = Score()
+        score.task = self
+        score.date = date.today()
+        diff_dict = Task.objects.annotate(diff=ExpressionWrapper(F('estimate') - F('creation_date'),
+                                                                 output_field=models.DurationField()
+                                                                )
+                                         ).aggregate(Max('diff'))
+        score.points = ((score.date - self.creation_date).days /
+                        (self.estimate - self.creation_date).days) \
+                        + ((self.estimate - self.creation_date).days / diff_dict['diff__max'].days)
+        score.save()
+        return score
+
 class Roadmap(models.Model):
 
 
@@ -87,15 +104,3 @@ class Score(models.Model):
     )
     date = models.DateField(verbose_name="Дата зачисления")
     points = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="Количество зачистенных очков")
-
-    def set_score(self, task):
-        self.task = task
-        self.date = date.today()
-        diff_dict = Task.objects.annotate(diff=ExpressionWrapper(F('estimate') - F('creation_date'),
-                                                                 output_field=models.DurationField()
-                                                                )
-                                         ).aggregate(Max('diff'))
-        self.points = ((self.date - self.task.creation_date).days /
-                       (self.task.estimate - self.task.creation_date).days) \
-                        + ((self.task.estimate - self.task.creation_date).days / diff_dict['diff__max'].days)
-        return self
