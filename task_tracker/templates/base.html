@@ -21,17 +21,12 @@
     <ul class="nav nav-pills">
       <li class={% block nav_task %}""{% endblock %}><a href={% url 'tasks-list' %}>Задачи</a></li>
       <li class={% block nav_roadmap %}""{% endblock %}><a href={% url 'roadmap-list' %}>Дорожные карты</a></li>
-
-      <li class=><a href=
-      {% if user.is_authenticated %}
-          {% url 'logout_pg' %}>выйти {{ user.email }}
+    {% if user.is_authenticated %}
+      <li class=><a href={% url 'logout_pg' %}>выйти {{ user.email }}</a></li>
       {% else %}
-          {% url 'login' %}>Войти
+      <li class=><a href={% url 'login' %}>Войти {{ user.email }}</a></li>
+      <li class=><a href={% url 'create-user' %}>Зарегистрироваться {{ user.email }}</a></li>
       {% endif %}
-      </a></li>
-
-
-
     </ul>
     <div class="container-fluid">
         <div class="col-md-9 col-md-offset-2">

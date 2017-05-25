@@ -7,8 +7,8 @@ class User(AbstractUser):
     username = models.CharField(max_length=1, blank=True)
     email = models.EmailField(('E-mail'), unique=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
-                                 message="Phone number must be entered in the format: '+999999999'. \
-                                 Up to 15 digits allowed.")
+                                 message="Номер телефона должен быть представлен в формате: '+999999999'. \
+                                 До 15 знаков доступно.")
     phone = models.CharField(verbose_name='Номер телефона', max_length=15, validators=[phone_regex])
     first_name = models.CharField(verbose_name='Имя', max_length=30)
     last_name = models.CharField(verbose_name='Фамилия', max_length=30)

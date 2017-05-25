@@ -42,6 +42,3 @@ class AuthForm(AuthenticationForm):
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
         self.helper.add_input(Submit('submit', 'Войти'))
-        self.helper.add_input(Button('regist', "Зарегестрировать",
-                                     href=reverse_lazy('create-user'),
-                                     css_class='btn btn-success'))

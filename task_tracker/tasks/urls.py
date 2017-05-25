@@ -21,6 +21,7 @@ RoadmapStatisticJson, ScoreStatisticJson, RoadmapStatistic
 
 urlpatterns = [
     # Страница со всеми созданными заданиями
+    url(r'^$', TasksList.as_view(), name='index'),
     url(r'^task/all/$', TasksList.as_view(), name='tasks-list'),
     # Страница с информацией о конкретной задаче
     url(r'^task/(?P<pk>[0-9]+)/$', TaskDetailed.as_view(), name='task-detail'),
