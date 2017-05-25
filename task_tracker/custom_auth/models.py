@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 
 
 class User(AbstractUser):
-    username = models.CharField(max_length=1, blank=True)
+    username = None
     email = models.EmailField(('E-mail'), unique=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                  message="Номер телефона должен быть представлен в формате: '+999999999'. \

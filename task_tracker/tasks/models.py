@@ -83,7 +83,9 @@ class Task(models.Model):
         return score
 
 class Roadmap(models.Model):
-
+    owner = models.ForeignKey(User,
+                              verbose_name="Владелец",
+                              on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Дорожная карта №{self.pk}'

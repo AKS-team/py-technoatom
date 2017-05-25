@@ -41,6 +41,7 @@ class TaskUpdateForm(forms.ModelForm):
         model = Task
         exclude = [
             'id',
+            'owner'
         ]
 
 
@@ -61,17 +62,20 @@ class TaskUpdateForm(forms.ModelForm):
         return instance
 
 class RoadmapCreateForm(forms.ModelForm):
-    tasks = forms.ModelMultipleChoiceField(queryset=Task.objects.filter(roadmap__isnull=True),
-                                           widget=forms.CheckboxSelectMultiple(),
-                                           help_text='Задания, которые не входят в другие дорожные карты',
-                                           label="Задания:")
     class Meta:
         model = Roadmap
         fields = []
 
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(RoadmapCreateForm, self).__init__(*args, **kwargs)
+        self.user = user
+        self.fields['tasks'] = forms.ModelMultipleChoiceField(queryset=Task.objects.filter(roadmap__isnull=True,
+                                                                                           owner=user),
+                                                              widget=forms.CheckboxSelectMultiple(),
+                                                              help_text='Задания, которые не входят в другие \
+                                                              дорожные карты',
+                                                              label="Задания:")
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
@@ -80,6 +84,7 @@ class RoadmapCreateForm(forms.ModelForm):
 
     @transaction.atomic
     def save(self, *args, **kwargs):
+        self.instance.owner = self.user
         instance = super(RoadmapCreateForm, self).save(*args, **kwargs)
         for task in self.cleaned_data['tasks']:
             task.roadmap = instance
