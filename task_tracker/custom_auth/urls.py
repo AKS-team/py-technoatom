@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import reverse_lazy
+from django.contrib.auth.views import login, logout
+
+from custom_auth.views import CreateUser
+from custom_auth.forms import AuthForm
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^auth/', include('custom_auth.urls')),
-    url(r'^', include('tasks.urls')),
+    url(r'^registration', CreateUser.as_view(), name='create-user'),
+    url(r'^login/$', login, {'authentication_form': AuthForm}, name='login'),
+    url(r'^logout/$', logout, {'next_page': reverse_lazy('login')}, name='logout_pg'),
 ]

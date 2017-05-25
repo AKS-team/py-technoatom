@@ -21,6 +21,17 @@
     <ul class="nav nav-pills">
       <li class={% block nav_task %}""{% endblock %}><a href={% url 'tasks-list' %}>Задачи</a></li>
       <li class={% block nav_roadmap %}""{% endblock %}><a href={% url 'roadmap-list' %}>Дорожные карты</a></li>
+
+      <li class=><a href=
+      {% if user.is_authenticated %}
+          {% url 'logout_pg' %}>выйти {{ user.email }}
+      {% else %}
+          {% url 'login' %}>Войти
+      {% endif %}
+      </a></li>
+
+
+
     </ul>
     <div class="container-fluid">
         <div class="col-md-9 col-md-offset-2">

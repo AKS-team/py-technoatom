@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     'tasks',
+    'custom_auth'
 ]
+
+AUTH_USER_MODEL = 'custom_auth.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,7 +61,7 @@ ROOT_URLCONF = 'task_tracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,3 +138,5 @@ STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 PROJECT_HOST = 'tasktracker.ru'
+
+LOGIN_REDIRECT_URL = '/task/all'
