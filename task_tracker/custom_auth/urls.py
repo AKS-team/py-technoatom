@@ -23,6 +23,6 @@ from custom_auth.forms import AuthForm
 
 urlpatterns = [
     url(r'^registration', CreateUser.as_view(), name='create-user'),
-    url(r'^login/$', login, {'authentication_form': AuthForm}, name='login'),
-    url(r'^logout/$', logout, {'next_page': reverse_lazy('login')}, name='logout_pg'),
+    url(r'^login', login, {'authentication_form': AuthForm}, name='login'),
+    url(r'^logout', logout, {'next_page': reverse_lazy('login')}, name='logout_pg'),
 ]

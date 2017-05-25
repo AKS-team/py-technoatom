@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.db import models
 from django.db.models import F, Max, ExpressionWrapper
 
+from custom_auth.models import User
+
 # Create your models here.
 class Task(models.Model):
     IN_PROGRESS = 'INP'
@@ -25,6 +27,9 @@ class Task(models.Model):
                                 null=True,
                                 verbose_name="Дорожная карта",
                                 on_delete=models.CASCADE)
+    owner = models.ForeignKey(User,
+                              verbose_name="Владелец",
+                              on_delete=models.CASCADE)
 
 
     def __str__(self):
@@ -53,7 +58,7 @@ class Task(models.Model):
         return reverse('task-detail', kwargs={'pk': self.pk})
 
     def get_fields(self):
-        exclude = ('id',)
+        exclude = ('id', 'owner')
         return [
             (field.name, field.verbose_name, self._get_FIELD_display(field))
             for field in self.__class__._meta.fields

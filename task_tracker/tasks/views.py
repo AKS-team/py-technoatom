@@ -11,6 +11,9 @@ from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
 from django.core.serializers import serialize
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django import http
 
 from tasks.models import Task, Roadmap, Score
 from tasks.forms import TaskCreateForm, TaskUpdateForm, RoadmapCreateForm
@@ -34,6 +37,16 @@ class TasksList(ListView):
 class TaskCreate(CreateView):
     form_class = TaskCreateForm
     model = Task
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TaskCreate, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
+        obj.save()
+        return http.HttpResponseRedirect(obj.get_absolute_url())
 
 class TaskUpdate(UpdateView):
     form_class = TaskUpdateForm

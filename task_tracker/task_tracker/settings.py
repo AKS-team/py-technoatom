@@ -140,3 +140,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 PROJECT_HOST = 'tasktracker.ru'
 
 LOGIN_REDIRECT_URL = '/task/all'
+
+LOGIN_URL = '/auth/login'
