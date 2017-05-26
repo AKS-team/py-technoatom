@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.db import models
 from django.db.models import F, Max, ExpressionWrapper
 
+from django.conf import settings
 from custom_auth.models import User
 
 # Create your models here.
@@ -27,7 +28,7 @@ class Task(models.Model):
                                 null=True,
                                 verbose_name="Дорожная карта",
                                 on_delete=models.CASCADE)
-    owner = models.ForeignKey(User,
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               verbose_name="Владелец",
                               on_delete=models.CASCADE)
 
@@ -83,7 +84,7 @@ class Task(models.Model):
         return score
 
 class Roadmap(models.Model):
-    owner = models.ForeignKey(User,
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               verbose_name="Владелец",
                               on_delete=models.CASCADE)
 

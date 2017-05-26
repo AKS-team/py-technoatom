@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.urls import reverse
 
 
 class User(AbstractUser):
@@ -21,3 +22,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
+
+    def get_absolute_url(self):
+        return reverse('profile-user')

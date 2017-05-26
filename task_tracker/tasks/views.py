@@ -4,18 +4,14 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views import View
-from django.shortcuts import render, redirect, get_object_or_404, render_to_response
+from django.shortcuts import render, redirect, render_to_response
 from django.urls import reverse_lazy, reverse
 from django.db import connection
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
-from django.core.serializers import serialize
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 from django import http
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import transaction
 
 from tasks.models import Task, Roadmap, Score
 from tasks.forms import TaskCreateForm, TaskUpdateForm, RoadmapCreateForm
@@ -36,6 +32,7 @@ class CreteWithOwnerMixin:
         obj.owner = self.request.user
         obj.save()
         return http.HttpResponseRedirect(obj.get_absolute_url())
+
 
 class TaskDetailed(LoginRequiredMixin, UserFilterMixin, DetailView):
     model = Task

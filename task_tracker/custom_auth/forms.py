@@ -42,3 +42,6 @@ class AuthForm(AuthenticationForm):
         self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-8'
         self.helper.add_input(Submit('submit', 'Войти'))
+
+class UserUpdateForm(UserForm, forms.ModelForm):
+    pass

@@ -13,16 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
-from django.contrib import admin
+from django.conf.urls import url
 from django.urls import reverse_lazy
 from django.contrib.auth.views import login, logout
 
-from custom_auth.views import CreateUser
+from custom_auth.views import CreateUser, UpdateUser, ProfileUser
 from custom_auth.forms import AuthForm
 
 urlpatterns = [
     url(r'^registration', CreateUser.as_view(), name='create-user'),
-    url(r'^login', login, {'authentication_form': AuthForm}, name='login'),
+    url(r'^login', login, {'authentication_form': AuthForm,
+                           'template_name': 'login.html'}, name='login'),
     url(r'^logout', logout, {'next_page': reverse_lazy('login')}, name='logout_pg'),
+    url(r'^update$', UpdateUser.as_view(), name='update-user'),
+    url(r'^profile$', ProfileUser.as_view(), name='profile-user'),
 ]
