@@ -24,10 +24,10 @@
     {% if user.is_authenticated %}
       <li class={% block nav_profile %}""{% endblock %}><a href={% url 'profile-user' %}>Профайл</a></li>
       <li><a href={% url 'logout_pg' %}>выйти из {{ user.email }}</a></li>
-      {% else %}
+     {% else %}
       <li class={% block nav_login %}""{% endblock %}><a href={% url 'login' %}>Войти {{ user.email }}</a></li>
       <li class={% block nav_registrate %}""{% endblock %}><a href={% url 'create-user' %}>Зарегистрироваться {{ user.email }}</a></li>
-      {% endif %}
+     {% endif %}
     </ul>
     <div class="container-fluid">
         <div class="col-md-9 col-md-offset-2">
