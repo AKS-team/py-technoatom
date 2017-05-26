@@ -1,21 +1,32 @@
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django import http
 
 from custom_auth.models import User
 from custom_auth.forms import UserForm
 from custom_auth.forms import UserUpdateForm
 
+class LoginAfterFormValidMixin:
+    def form_valid(self, form):
+        super(LoginAfterFormValidMixin, self).form_valid(form)
+        new_user = authenticate(username=form.cleaned_data['email'],
+                                password=form.cleaned_data['password']
+                               )
+        login(self.request, new_user)
+        return http.HttpResponseRedirect(reverse_lazy('profile-user'))
 
-class CreateUser(CreateView):
-    template_name = 'login.html'
+
+class CreateUser(LoginAfterFormValidMixin, CreateView):
+    template_name = 'registrate.html'
     form_class = UserForm
     success_url = reverse_lazy('tasks-list')
     model = User
 
-class UpdateUser(LoginRequiredMixin, UpdateView):
-    template_name = 'login.html'
+class UpdateUser(LoginRequiredMixin, LoginAfterFormValidMixin, UpdateView):
+    template_name = 'update_user.html'
     form_class = UserUpdateForm
     model = User
     success_url = reverse_lazy('tasks-list')

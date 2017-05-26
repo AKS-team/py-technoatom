@@ -22,10 +22,11 @@
       <li class={% block nav_task %}""{% endblock %}><a href={% url 'tasks-list' %}>Задачи</a></li>
       <li class={% block nav_roadmap %}""{% endblock %}><a href={% url 'roadmap-list' %}>Дорожные карты</a></li>
     {% if user.is_authenticated %}
-      <li class=><a href={% url 'logout_pg' %}>выйти {{ user.email }}</a></li>
+      <li class={% block nav_profile %}""{% endblock %}><a href={% url 'profile-user' %}>Профайл</a></li>
+      <li><a href={% url 'logout_pg' %}>выйти из {{ user.email }}</a></li>
       {% else %}
-      <li class=><a href={% url 'login' %}>Войти {{ user.email }}</a></li>
-      <li class=><a href={% url 'create-user' %}>Зарегистрироваться {{ user.email }}</a></li>
+      <li class={% block nav_login %}""{% endblock %}><a href={% url 'login' %}>Войти {{ user.email }}</a></li>
+      <li class={% block nav_registrate %}""{% endblock %}><a href={% url 'create-user' %}>Зарегистрироваться {{ user.email }}</a></li>
       {% endif %}
     </ul>
     <div class="container-fluid">
