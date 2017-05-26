@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.urls import reverse_lazy
 from django.contrib.auth.views import login, logout
 
@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^logout', logout, {'next_page': reverse_lazy('login')}, name='logout_pg'),
     url(r'^update$', UpdateUser.as_view(), name='update-user'),
     url(r'^profile$', ProfileUser.as_view(), name='profile-user'),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
 ]
